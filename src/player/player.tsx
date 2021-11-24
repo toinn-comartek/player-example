@@ -1,28 +1,25 @@
 import React from "react";
 import videojs from "video.js";
-import './player.css';
-
+import "./player.css";
 
 interface IVideoJSProps {
-  options: any,
-  onReady: any
+  options: any;
+  onReady: any;
 }
-export const VideoJS: React.FC<IVideoJSProps> = ( props ) => {
-
+export const VideoJS: React.FC<IVideoJSProps> = (props) => {
   const videoRef: any = React.useRef(null);
   const playerRef: any = React.useRef(null);
   const { options, onReady } = props;
 
   React.useEffect(() => {
-
     // make sure Video.js player is only initialized once
     if (!playerRef.current) {
       const videoElement = videoRef.current;
       if (!videoElement) return;
-      const player = playerRef.current = videojs(videoElement, options, () => {
+      const player = (playerRef.current = videojs(videoElement, options, () => {
         console.log("player is ready");
         onReady && onReady(player);
-      });
+      }));
     } else {
       // you can update player here [update player through props]
       // const player = playerRef.current;
@@ -48,6 +45,6 @@ export const VideoJS: React.FC<IVideoJSProps> = ( props ) => {
       <video ref={videoRef} className="video-js vjs-big-play-centered" />
     </div>
   );
-}
+};
 
 export default VideoJS;
