@@ -4,12 +4,11 @@ import "./player.css";
 
 interface IVideoJSProps {
   options: any;
-  onReady: any;
 }
 export const VideoJS: React.FC<IVideoJSProps> = (props) => {
   const videoRef: any = React.useRef(null);
   const playerRef: any = React.useRef(null);
-  const { options, onReady } = props;
+  const { options } = props;
 
   React.useEffect(() => {
     // make sure Video.js player is only initialized once
@@ -18,7 +17,7 @@ export const VideoJS: React.FC<IVideoJSProps> = (props) => {
       if (!videoElement) return;
       const player = (playerRef.current = videojs(videoElement, options, () => {
         console.log("player is ready");
-        onReady && onReady(player);
+        handlePlayerReady(player);
       }));
     } else {
       // you can update player here [update player through props]
@@ -39,6 +38,16 @@ export const VideoJS: React.FC<IVideoJSProps> = (props) => {
       }
     };
   }, [playerRef]);
+
+  const handlePlayerReady = (player: any) => {
+    player.on("waiting", () => {
+      console.log("player is waiting");
+    });
+
+    player.on("dispose", () => {
+      console.log("player will dispose");
+    });
+  };
 
   return (
     <div data-vjs-player>
